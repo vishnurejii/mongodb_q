@@ -9,7 +9,7 @@ db.employees.find(
 )
 
 
-db.user.insertOne({name:"vishnu",age:22,address:{addr1:"kenichira",city:"wayanad",state:"kerala"}})
+db.user.insertMany({name:"vishnu",age:22,address:{addr1:"kenichira",city:"wayanad",state:"kerala"}})
 
 
 db.user.find({name:1,age:1,city:"$address.city",state:"$address.state"})

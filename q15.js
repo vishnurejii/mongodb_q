@@ -19,6 +19,8 @@ db.employees.aggregate([
     }}
 ])
 
+db.employees.aggregate({$project:{_id:0,name:1,salary:1,grade:{$cond:[{$gt:["$salary",4000]},"",""]}}})
+
 //if condition 
 db.employees.aggregate([
     {$project:{_id:0,
@@ -40,6 +42,10 @@ db.employees.aggregate([{$project:{_id:0,
 }}])
 
 
+db.employees.aggregate({$project:{_id:0,name:1,salary:1,grade:{$cond:{if:{$gt:["$salary",3000],then:"",else:""}}}}})
+
+
+
 //switch case
 db.employees.aggregate([
     {$project:{
@@ -56,6 +62,10 @@ db.employees.aggregate([
     }
     }}
 ])
+
+db.employees.aggregate({$project:{_id:0,name:1,salary:1,grade:{$switch:{branches:[{case:{$gt:["$salary",3000],then:""}}],
+default:""}}}})
+
 
 
 db.employees.aggregate([
@@ -77,3 +87,4 @@ db.employees.aggregate([
 
 
 db.orders.insertOne({empId:ObjectId('6982bacd935d60e4f3628ca3'),product:"Router",orderValue:4500})
+
