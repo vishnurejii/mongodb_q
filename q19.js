@@ -1,0 +1,21 @@
+db.createView("orderView","employees",[
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "empId",   // case-sensitive ✔
+      as: "orders"
+    }
+  },
+  { $unwind: "$orders" },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      email: 1,
+      department: 1,
+      product: "$orders.product",
+      orderValue: "$orders.orderValue"
+    }
+  }
+]);

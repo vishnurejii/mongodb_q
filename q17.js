@@ -376,6 +376,11 @@ db.enrollments.aggregate([
 ]);
 
 
+//user interfaces
+//ahtul@gmail.com,1234
+db.users.find({email:"athul@gmial.com",password:1234})
+
+
 //display all courses
 db.courses.find()
 
@@ -393,4 +398,25 @@ db.enrollments.insertOne({
 })
 
 //mark l1 complete when u1 hits complete button
-db.lessonProgress.updateOne({})
+db.lessonProgress.insertOne({
+    studentId:'u1',
+    lessonId:'l1',
+    isCompleted:true
+})
+
+//check whether l1 is completed or not
+
+db.lessonProgress.find({
+    lessonId:'l1',studentId:'u1'
+})
+
+//change password
+db.users.updateOne({_id:"u1"},{$set:{password:"abc"}})
+
+//hsow profile details
+db.users.find({_id:'u1'})
+
+//admin interfaces
+//users CRUD
+//courses CRUD
+//modules CRUD
