@@ -4,6 +4,10 @@
 //mongod -replSet rs1 --dbpath "c:\mongo-replica\usa" --port 27018
 //mongod -replSet rs1 --dbpath "c:\mongo-replica\uk" --port 27019
 // mongod -replSet rs1 --dbpath "c:\mongo-replica\india" --port 27020
+
+// mongod -replSet rs1 --dbpath "c:\mongo-replica2\data1" --port 27018
+//  mongod -replSet rs1 --dbpath "c:\mongo-replica2\data2" --port 27019
+//   mongod -replSet rs1 --dbpath "c:\mongo-replica2\data3" --port 27020
 //mongosh --port 27018
 rs.initiate({
     _id:"rs1",
@@ -22,3 +26,11 @@ rs.initiate({
 
 //use mydatabase
 //db.users.insertOne({name:"vishnu",age:21})
+
+
+//mongosh --port 27020
+// db.getMongo().setReadPref("secondary")
+//db.user.find()
+
+//db.shutdownServer()
+//to restart again mongod -replSet rs1 --dbpath "c:\mongo-replica2\data1"
