@@ -1,15 +1,45 @@
-//login into replica set
-
-//created hdfcbank 
-//inserted customer details
-
-//transaction steps
-const session=db.getMongo().startSession()
-session.startTransaction()
-var custCollection=session.getDatabase("hdfcbank").customers
-custCollection.updateOne({_id:"c1"},{$inc:{balance:-100}})
-custCollection.updateOne({_id:"c2"},{$inc:{balance:100}})
-session.commitTransaction()
-session.endSession()
-
-db.customers.find()
+db.modules.aggregate(
+    [
+        {$lookup:{
+            from:"modules",
+            let:{courseId:"$_id"},
+            pipeline:
+                [
+                    {$match:{$expr:{$eq:["$courseId","$$courseId"]}}}
+                ],
+                as:"modules",
+            }
+        }
+    ]
+)
+//nested lookup
+db.courses.aggregate([
+  {
+    $lookup: {
+      from: "modules",
+      let: { courseId: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$courseId", "$$courseId"] }
+          }
+        },
+        {
+          $lookup: {
+            from: "lessons",
+            let: { moduleId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: { $eq: ["$moduleId", "$$moduleId"] }
+                }
+              }
+            ],
+            as: "lessons"
+          }
+        }
+      ],
+      as: "modules"
+    }
+  }
+])
