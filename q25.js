@@ -9,6 +9,7 @@
 new tab
 //mongod --configsvr -replSet cf --dbpath "c:\dbshards\conf" --port 27018
 
+
 new tab
 //mongod --configsvr -replSet cf --dbpath "c:\dbshards\confr" --port 27019
 
@@ -25,8 +26,10 @@ rs.status()
 
 
 
+
 new tab
 //mongod --shardsvr -replSet s1 --dbpath "c:\dbshards\s1" --port 27020
+
 
 new tab
 //mongod --shardsvr -replSet s1 --dbpath "c:\dbshards\s1r" --port 27021
@@ -61,6 +64,8 @@ rs.status()
 new tab
 //mongos --configdb cf/127.0.0.1:27018,127.0.0.1:27019 --port 27050
 
+
+
 new tab
 //mongosh --port 27050
 sh.addShard("s1/127.0.0.1:27020,127.0.0.1:27021")
@@ -76,10 +81,24 @@ sh.getShardedDataDistribution()
 
 db.customers.insertOne({_id:1,name:"customer1"})
 
-for(let i=3;i<=1000;i++){
+
+//use config
+db.settings.updateOne(
+  { _id: "chunksize" },
+  { $set: { value: 1 } },
+  { upsert: true }
+)
+
+for(let i=2;i<=10000;i++){
     db.customers.insertOne({
         _id:i,
         name:"customer"+i
     })
 }
 
+for(let i=20001;i<=30000;i++){
+    db.customers.insertOne({
+        _id:i,
+        name:"customer"+i
+    })
+}
